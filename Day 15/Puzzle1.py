@@ -1,5 +1,5 @@
-# Идея в обходе в ширину
-# Недочеты: не понимаю, почему гоблины дерутся не в полную силу...
+# Идея в обходе в ширину. Как я шел к этому алгоритму в папке
+# Недочеты: не понимаю, почему количество раундов отличается...
 
 # модуль нужен для BFS
 from collections import deque
@@ -75,21 +75,18 @@ def f(file):
                     enemies.append((units[u]['HP'], u))  # перечисляем всех противников
                     break
         aim = min(enemies)[1]  # выбираем самого слабого
-        if units[aim]['race'] == 'E':
-            units[aim]['HP'] -= 3
-        else:
-            units[aim]['HP'] -= 25  # здесь я подбирал, признаюсь
+        units[aim]['HP'] -= 3
         if units[aim]['HP'] <= 0:  # когда противник умирает, он отправляется на кладбище (0,0)
             units[aim]['HP'] = 0  # у меня идет перебор по всем персонажам. А менять список при переборе нельзя
             arr1[units[aim]['pos'][0]][units[aim]['pos'][1]] = '.'
             units[aim]['pos'] = (0,0)
-
 
     units = find_everybody(arr1)
     counter = len(units)  # так как я шел через кладбище и не разделял персонажей по расам, то у меня
     # выход реализован через проверку, что ВСЕ персонажи или на кладбище или не могут сходить
 
     q = 0  # раунды
+    # здесь мы каждый раунд обновляем всех персонажей поочереди
     while counter:
 
         # это для прорисовки поля после каждого хода
@@ -148,12 +145,12 @@ def f(file):
         res += i['HP']
 
     # отображени результата
-    return (q-1)*(res-15)
+    return (q-2)*res, q-2, res
 
-# print(f('test1.txt'))
-# print(f('test2.txt'))
-# print(f('test3.txt'))
-# print(f('test4.txt'))
-# print(f('test5.txt'))
-# print(f('test6.txt'))
-print(f('input.txt'))
+print(f('test1.txt'), 27730)
+print(f('test2.txt'), 36334)
+print(f('test3.txt'), 39514)
+print(f('test4.txt'), 27755)
+print(f('test5.txt'), 28944)
+print(f('test6.txt'), 18740)
+print(f('input.txt'), 191216)
